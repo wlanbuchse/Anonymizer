@@ -66,23 +66,32 @@ class RequestBuilder:
         a separate method for building non-ssl requests.
         """
 
-        # TODO Getting error 400 bad request
+        # TODO - Continue here -
+        #
+        # Request built based on data in SSL-request looks fine but
+        # the server interface returns -1 ...
 
         # Get random User-Agent-String from user_agent_manager-class
         manager = UserAgentManager()
-        ua_string = manager.get_ua_string()
+        ua_string = 'User-Agent: ' + manager.get_ua_string().rstrip('\n')
 
         # Initialise with obligatory items (see comment in request_parser-class)
         values_list = [
-            parser_output['request'],
-            ua_string,
-            parser_output['connection'],
-            parser_output['host']
+            'GET ' + parser_output['host'] + ' HTTP/1.1',
+            'Host: ' + parser_output['host'],
+            ua_string
         ]
+
+        # TODO Add other possible options (s.a.)
+        if 'connection' in parser_output.keys():
+            values_list.append(parser_output['connection'])
 
         data = '\r\n'.join(values_list)
         data = data.rstrip('\r\n')
         data = data.lstrip('\r\n')
         data += '\r\n\r\n'
+
+        print('(SSL) Request-builder returns following data: ')
+        print(data)
 
         return bytes(data, 'utf-8')

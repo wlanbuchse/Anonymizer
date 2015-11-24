@@ -120,18 +120,21 @@ class RequestParser:
             data_list = data_string.split('\r\n')
 
             output_dict = {
-                'request': data_list[0],
-                'user-agent': data_list[1],
-                'proxy-connection': data_list[2],
                 'connection': data_list[3],
                 'host': data_list[4]
             }
 
-            host_entry = output_dict['host']
-            first_colon = host_entry.find(':')
-            second_colon = host_entry.find(':', first_colon + 1)
-            host_entry = host_entry[first_colon + 2:second_colon]
-            self.host = host_entry
+            host_port_string = output_dict['host']
+            host_port_list = host_port_string.split(':')
+            _host = host_port_list[1].lstrip(' ')
+            _port = host_port_list[2]
+
+            output_dict['host'] = _host
+
+            print('Host: ' + _host)
+            print('Port: ' + _port)
+
+            self.host = _host
 
             return output_dict
         except UnicodeDecodeError:
