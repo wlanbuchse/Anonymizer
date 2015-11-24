@@ -29,7 +29,7 @@ class RequestBuilder:
 
         # Get random User-Agent-String from user_agent_manager-class
         manager = UserAgentManager()
-        ua_string = manager.get_ua_string()
+        ua_string = "User-Agent: " + manager.get_ua_string()
 
         # Initialise with obligatory items (see comment in request_parser-class)
         values_list = [
@@ -53,6 +53,9 @@ class RequestBuilder:
         data = data.rstrip('\r\n')
         data = data.lstrip('\r\n')
         data += '\r\n\r\n'
+
+        print('The request-builder returns following data:')
+        print(data)
 
         return bytes(data, 'utf-8')
 

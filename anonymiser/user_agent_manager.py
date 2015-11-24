@@ -11,7 +11,8 @@ class UserAgentManager:
     """
 
     def __init__(self):
-        self.ua_string_file_path = '/home/jpawelczyk/Cloud/PycharmProjects/Anonymiser/ua_strings.txt'
+        # TODO Guess location intelligently instead of hard-coding it
+        self.ua_string_file_path = '/home/johannes/Dokumente/Anonymizer/ua_strings.txt'
 
         self.ua_string_count = 0
         ua_file = open(self.ua_string_file_path, 'r')

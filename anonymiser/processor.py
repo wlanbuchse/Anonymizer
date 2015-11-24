@@ -39,9 +39,12 @@ class Processor(Thread):
         builder_output = self.request_builder.start(parser_output, is_ssl)
         website = self.server_interface.send_data(builder_output, host, is_ssl)
         # Send data to client (browser)
-        print('Sending data to client: ')
-        print(website)
-        self.conn_socket.sendall(website)
+        if website != -1:
+            print('Sending data to client: ')
+            print(website)
+            self.conn_socket.sendall(website)
+        else:
+            print('Server interface returned -1, couldn\'t retrieve website')
 
     def stop(self):
         # TODO Improve stopping processor threads.

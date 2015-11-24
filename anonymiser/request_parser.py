@@ -46,7 +46,7 @@ class RequestParser:
             data.append(chunk)
 
         print('Received following request from client: ')
-        print(data)
+        print(b''.join(data).decode('utf-8'))
 
         # Check if it's SSL-data
         data_as_string = b''.join(data).decode('utf-8')
