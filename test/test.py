@@ -4,16 +4,16 @@ __author__ = 'johannes'
 
 
 """
-This script is used to test the program.
+Dieses Skript wird verwendet um das Programm zu starten.
 """
 
-# Print some general information
-print('Welcome to Anonymizer!')
-print('This program will randomize your User-Agent-String to protect your privacy.')
+# Gib einige allgemeine Inforamtionen aus.
+print('Willkommen!')
+print('Dieses Programm verschleiert Ihren User-Agent-String um Ihre Privatsphäre zu schützen.')
 print('\n')
-print('[E] -> Error')
-print('[W] -> Warning')
-print('[I] -> Information')
+print('[E] -> Fehler')
+print('[W] -> Warnung')
+print('[I] -> Hinweis')
 print('\n\n')
 
 intf = ClientInterface()

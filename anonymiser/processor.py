@@ -8,8 +8,8 @@ __author__ = 'johannes'
 
 class Processor(Thread):
     """
-    This class is a container for a request-parser, a request-builder and a server-interface. A new instance of this
-    class is spawned by the client-interface for each unique client.
+    Diese Klasse ist ein Container für einen Request-Parser, einen Request-Builder und ein Server-Interface.
+    Das Client-Interface erstellt eine neue Instanz dieser Klasse für jeden einzigartigen Client.
     """
 
     def __init__(self, client_interface, address, conn_socket):
@@ -23,34 +23,31 @@ class Processor(Thread):
 
     def run(self):
         """
-        Gets called when a new instance of this class (processor) is created. Checks if there's already a processor-
-        instance for this client and shuts down if so. Also calls the request-parser, the request-builder and the
-        server-interface. Then proceeds by sending the data it received from the server-interface to the client.
+        Diese Methode wird ausgeführt sobald eine neue Instanz dieser Klasse erstellt wird. Sie überprüft, ob schon eine
+        andere Processor-Instanz den selben Client behandelt und terminiert wenn das der Fall ist. Ruft außerdem
+        Request-Parser, Request-Builder und Server-Interface auf. Sendet dann die vom Server-Interface erhaltenen Daten
+        zurück an den Client (den Webbrowser).
         """
 
-        print('[I] New thread created to handle connection with client')
+        print('[I] Neuer Thread erstellt um mit diesem Client zu kommunizieren.')
 
         reg_status = self.client_interface.register(self.address)
 
         if reg_status == -1:
-            print('[I] There\'s already a thread handling this connection. Shutting down.')
+            print('[I] Eine andere Processor-Instanz behandelt schon diesen Client, terminiere.')
             return -1
 
         parser_output, host = self.request_parser.start(self.conn_socket)
         if parser_output == -1 or parser_output is None:
-            return -1
+            print('[E] Parser returned -1')
         builder_output = self.request_builder.start(parser_output)
         website = self.server_interface.send_data(builder_output, host)
 
-        # Send data to client (browser)
+        # Sende Daten zurück zum Client (Webbrowser)
         if website != -1:
             self.conn_socket.sendall(website)
         else:
-            print('[E] Server interface returned -1, couldn\'t retrieve website')
+            print('[E] Server-Interface hat -1 zurückgegeben, konnte Webseite nicht holen.')
 
     def stop(self):
-        """
-        De-registers a thread in client-interface-class
-        """
-
         self.client_interface.deregister(self.address)
